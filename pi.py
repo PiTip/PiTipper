@@ -12,7 +12,7 @@ print('Getting comments from subreddit..')
 forest_comments = submission.comments
 flat_comments = praw.helpers.flatten_tree(subreddit_comments)
 for comment in flat_comments:
-	if comment.body == "Tip"and comment.id not in already_done:
+	if comment.body == "Tip" and comment.id not in already_done:
 		comment.reply('+/u/DogeTipBot 31.415926 doge') 
 		already_done.add(comment.id)
 		print('Done!')
