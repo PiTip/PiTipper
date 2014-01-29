@@ -38,39 +38,20 @@ class TestUpdate(unittest.TestCase):
         r.login(self.user, self.password)
         already_done = set()
         # Look for recent submissions in r/dogecoin
-        subreddit = r.get_subreddit('dogecoin')
-        comments = list(itertools.islice(subreddit.get_comments(), 10))
-        for comment in comments:
-            log.debug("Comment {0}".format(comment.id))
-            subcomments = comment.submission.comments
-            # Do unnested comments?
-            for subcomment in [
-                    sc for sc in subcomments if isinstance(
-                        sc, praw.objects.Comment)]:
-                try:
-                    log.debug("Subcomment {0}".format(subcomment.id))
+        for comment in itertools.islice(
+                r.get_subreddit('dogecoin'
+                    ).get_comments(), 10):
+            log.debug("Doing comment id {0}".format(comment.id))
+            for prawobj in [comment.submission.comments]:
+                subcomments = [prawobj] \
+                    if not isinstance(prawobj, list) else prawobj
+                for subcomment in subcomments:
                     if subcomment.body == "Tip" \
                         and subcomment.id not in already_done:
-                        log.debug(
-                            "Reply to comment {0} ('+/u/Doge" + \
-                                "TipBot 31.415926 doge')".format(
+                        log.debug("Reply to comment {0} ('+/u/Doge" + \
+                                  "TipBot 31.415926 doge')".format(
                                 subcomment.id))
                         already_done.add(subcomment.id)
-                except AttributeError as msg:
-                    log.debug("Ooops {0}".format(msg))
-            # Do flattened nested comments?
-            for comment in praw.helpers.flatten_tree(comments):
-                log.debug("Flattened Subcomment {0}".format(comment.id))
-                if comment.body == "Tip" and comment.id not in already_done:
-                    # comment.reply('+/u/DogeTipBot 31.415926 doge')
-                    log.debug(
-                        "Reply to comment {0} ('+/u/DogeTipBot" + \
-                        " 31.415926 doge')".format(comment.id))
-                    already_done.add(comment.id)
-                    log.debug('Done!')
-                else:
-                    # Actually is error?
-                    log.debug('Error')
 
 
 if __name__ == '__main__':
