@@ -1,0 +1,11 @@
+include CHANGELOG.md
+include LICENSE
+include README.md
+include CONTRIBUTORS
+include ez_setup.py
+recursive-include src *.py
+recursive-include examples *.py
+graft tests
+graft docs
+prune docs/_build
+global-exclude *.pyc *$py.class
