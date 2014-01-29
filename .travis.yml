@@ -16,7 +16,7 @@ before_script:
     - flake8 --exit-zero src
 
 script:
-    - python setup.py test
+    - REDDIT_DSN="username:password" python setup.py test
 
 after_success:
     - if [[ $HAS_COVERALLS ]] ; then coveralls ; fi
