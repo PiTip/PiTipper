@@ -19,11 +19,11 @@ class TestUpdate(unittest.TestCase):
         import os
         try:
             (self.user, self.password) = os.environ.get(
-                'REDDIT_DSR', None).split(':')
+                'REDDIT_DSN', None).split(':')
         except:
             log.debug(
                 '''Reddit connection details expected in''' + \
-                '''os environ, e.g. REDDIT_DSR="username:password"''')
+                '''os environ, e.g. REDDIT_DSN="username:password"''')
             raise Exception("No connection DSN")
 
     def tearDown(self):
